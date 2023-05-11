@@ -25,16 +25,21 @@ public class functional {
 			precioTotal = shopping.stream().map(producto -> producto.price
 												.multiply(new BigDecimal(producto.tax.percent).divide(new BigDecimal(100)))
 												.add(producto.price))
-												.reduce(BigDecimal.ZERO, BigDecimal::add);
+												.reduce(BigDecimal.ZERO, BigDecimal::add)
+												.setScale(2, RoundingMode.HALF_UP);
 			
-			System.out.println(precioTotal.setScale(2, RoundingMode.HALF_UP));
+			System.out.println("Total de p: "+precioTotal + "€");
 			
 			
 			System.out.println("Lista de productos que empiezan por C ordenadas");
 			
 			List<Product> productStartWithC = shopping.stream().filter((product) -> product.name.startsWith("C"))
-																		.sorted((p1,p2) -> p1.price.compareTo(p2.price))
+																		.sorted((p1,p2) -> p1.name.compareTo(p2.name))
 																		.collect(Collectors.toList());
+			
+			//Esto devolveria un String
+			//.map(product -> product.name)
+			//.collect(Collectors.joining(", ", "Products starts with C are", "."))
 			
 			System.out.println(productStartWithC);
 	}
